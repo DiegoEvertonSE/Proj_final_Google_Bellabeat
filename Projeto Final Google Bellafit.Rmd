@@ -1,0 +1,399 @@
+---
+title: "Proj Google Bellabeat"
+author: "Diego Everton da Silva Evangelista"
+date: "2023-11-07"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+https://github.com/Gui-lherme-Oliv/Google_Data_Analytics-Estudo_de_caso_Bellabeat
+https://www.kaggle.com/code/chebotinaa/bellabeat-case-study-with-r
+https://www.kaggle.com/code/macarenalacasa/capstone-case-study-bellabeat#--2.-Ask-Phase---
+
+## Estudo de caso: Melhores tendencias Empresa Bellabeat
+
+#### Autor: Diego Everton
+
+
+Fundada em 2013 a empresa Bellabeat é uma empresa de alta tecnologia que fabrica produtos inteligentes focados na saúde. A empresa é focada na coleta de dados sobre atividade, sono, estresse e saúde reprodutiva, para dar às mulheres conhecimentos sobre sua prória saúde e seu habitos.
+
+A Bellabeat é uma pequena empresa de sucesso, mas tem potencial para se adiquirir mais participação no mercado global de dispositivos inteligentes. Urška Sršen, cofundadora e CEO da Bellabeat, acredita que a análise de dados de condicionamento físico a partir de dispositivos inteligentes pode ajudar a abrir novas oportunidades de crescimento para a empresa.
+
+####**Personagens e produtos**
+
+#####**Personagens**
+
+**Urška Sršen**: Cofundadora e CEO da Bellabeat.
+
+**Sando Mur**: Matemático e cofundador da Bellabeat; membro-chave da equipe executiva da Bellabeat.
+
+**Equipe de análise de marketing da Bellabeat**: Uma equipe de analistas de dados responsável por coletar, analisar e relatar dados que ajudam a orientar a estratégia de marketing da Bellabeat. Você se juntou a esta equipe há seis meses e tem estado ocupado aprendendo sobre a missão e os objetivos de negócios da Bellabeat – e como você, como analista de dados júnior, também pode ajudar a Bellabeat a alcançá-los.
+
+#####**Produtos**
+
+**Aplicativo Bellabeat**: O aplicativo Bellabeat fornece aos usuários dados de saúde relacionados à sua atividade, sono, estresse, ciclo menstrual e hábitos de atenção plena. Esses dados podem ajudar os usuários a entender melhor seus hábitos atuais e tomar decisões saudáveis. O aplicativo Bellabeat se conecta à sua linha de produtos inteligentes de bem-estar.
+
+**Leaf**: O rastreador de bem-estar clássico da Bellabeat pode ser usado como pulseira, colar ou clipe. O rastreador Leaf se conecta ao aplicativo Bellabeat para rastrear a atividade, o sono e o estresse.
+
+**Time**: Este relógio de bem-estar combina a aparência atemporal de um relógio clássico com tecnologia inteligente para rastrear a atividade, o sono e o estresse do usuário. O relógio Time se conecta ao aplicativo Bellabeat para fornecer informações sobre seu bem-estar diário.
+
+**Spring**: Esta é uma garrafa de água que rastreia a ingestão diária de água por meio de tecnologia inteligente para garantir que você esteja adequadamente hidratado ao longo do dia. A garrafa Spring se conecta ao aplicativo Bellabeat para rastrear seus níveis de hidratação.
+
+**Planos da Bellabeat**: A Bellabeat também oferece aos usuários diferentes planos de assinatura. As assinaturas oferecem aos usuários acesso 24 horas por dia, 7 dias por semana, orientação totalmente personalizada sobre nutrição, atividade, sono, saúde e beleza, além de atenção plena com base em seu estilo de vida e objetivos.
+
+A Urška sabe que uma análise dos dados de consumo disponíveis da Bellabeat revelaria mais oportunidades de crescimento. Ela pediu à equipe de análise de marketing para se concentrar em um produto da Bellabeat e analisar os dados de uso de dispositivos inteligentes para obter informações sobre como as pessoas já estão usando seus dispositivos inteligentes. Assim, por meio dessas informações, ela gostaria de conferir excelentes recomendações sobre como essas tendências podem nortear a estratégia de marketing da Bellabeat.
+
+####Etapas do processo de analise de dados
+* Pergunta
+* Preparação
+* Processamento
+* Analise 
+* Compartilhamento 
+* Ação
+
+####Pergunta
+
+Analisar os dados de uso de dispositivos inteligente par obter informações sobre como os consumidores usam dispositivos inteligentes que não são da BellaBeat. m seguida, ela quer que você selecione um produto da Bellabeat para aplicar esses insights em sua apresentação. Estas perguntas deverão nortear sua análise.
+
+1.	Quais são algumas das tendências no uso de dispositivos inteligentes?
+2.	Como essas tendências podem se aplicar aos clientes da Bellabeat?
+3.	Como essas tendências podem ajudar a influenciar a estratégia de marketing da Bellabeat?
+
+####Preparação
+
+A fonte de dados utilizada para o nosso estudo de caso são os dados do FitBit Fitness Tracker. Este conjunto de dados está armazenado no Kaggle e foi disponibilizado através do Mobius.
+
+Verificando os metadados do nosso conjunto de dados, podemos confirmar que é de fonte aberta. O proprietário dedicou o trabalho ao domínio público, renunciando a todos os seus direitos sobre o trabalho a nível mundial ao abrigo da lei dos direitos de autor, incluindo todos os direitos conexos e vizinhos, na medida do permitido por lei. Pode copiar, modificar, distribuir e executar a obra, mesmo para fins comerciais, tudo isto sem pedir autorização.
+
+Estes conjuntos de dados foram gerados pelos inquiridos num inquérito distribuído através da Amazon Mechanical Turk entre 03.12.2016 e 05.12.2016. Trinta utilizadores elegíveis do Fitbit consentiram na apresentação de dados pessoais do rastreador, incluindo resultados ao nível dos minutos para a atividade física, a frequência cardíaca e a monitorização do sono. A variação entre os resultados representa a utilização de diferentes tipos de monitores Fitbit e os comportamentos/preferências individuais de monitorização.
+
+```{r  instando as bibliotecas}
+install.packages("tidyverse")
+install.packages("here")
+install.packages("skimr")
+install.packages("janitor")
+install.packages("lubridate")
+install.packages("plotly")
+install.packages("dplyr")
+install.packages("ggplot2")
+```
+
+```{r Abrindo as biblioteca}
+library(tidyverse)
+library(here)
+library(skimr)
+library(janitor)
+library(lubridate)
+library(plotly)
+library(dplyr)
+library(ggplot2)
+```
+
+### Processamento
+Os arquivos foram nomeados de acordo com a nomeclatura dos arquivos de origem
+
+####3.1 - Importando o conjunto de dados
+
+```{r Importando os arquivos csv}
+atvDia <- read.csv("dailyActivity_merged.csv")
+caloriasdia <- read.csv("dailyCalories_merged.csv")
+intensidadehora <- read.csv("hourlyIntensities_merged.csv")
+passosHora <- read.csv ("hourlySteps_merged.csv")
+pesoinfo <- read.csv("weightLogInfo_merged.csv")
+sonoDia <- read.csv("sleepDay_merged.csv")
+caloriashora <- read_csv("hourlyCalories_merged.csv")
+caloriashora <- read_csv("hourlyCalories_merged.csv")
+```
+### 3.2 - Analisando os Dataframes
+
+#### 3.2.1 - Visualizando o resumo de medidas estatisticas dos dataframes
+
+```{r Visualizando o resumo estatistico dos Dataframes}
+view(atvDia)
+summary(atvDia)
+
+view(caloriasdia)
+summary(caloriasdia)
+
+view(intensidadehora)
+summary(intensidadehora)
+
+view(passosHora)
+summary(passosHora)
+
+view(sonoDia)
+summary(sonoDia)
+
+view(pesoinfo)
+summary(pesoinfo)
+
+view(caloriashora)
+summary(caloriashora)
+
+```
+
+#### 3.2.2 - Verificando dados nulos (N/A)
+
+```{r}
+sum(is.na(atvDia))
+sum(is.na(caloriasdia))
+sum(is.na(intensidadehora))
+sum(is.na(passosHora))
+sum(is.na(sonoDia))
+```
+Não houve dados nulos (N/A) em nenhum desses dataframes
+
+#### 3.2.3 - Removendo dados duplicados
+
+```{r Verificando dados duplicados}
+sum(duplicated(atvDia))
+sum(duplicated(caloriasdia))
+sum(duplicated(intensidadehora))
+sum(duplicated(passosHora))
+sum(duplicated(sonoDia))
+
+```
+Apenas o dataframe *sonodia* aprentou dados duplicadores. Portanto, precisamos remove-los
+```{r Apagendo dados duplicados}
+sonoDia <- unique(sonoDia)
+
+```
+#### 3.2.4 - Renomenado colunas
+Para garantir que o nome das colunas estejm com a sintaxe correta, unicos e consistentes, para tal será usado a função clean_names()
+
+```{r cleanames}
+atvDia <- atvDia %>%
+  clean_names()
+caloriasdia <- caloriasdia %>%
+  clean_names()
+caloriasdia <- caloriasdia %>%
+  clean_names()
+intensidadehora <- intensidadehora %>%
+  clean_names()
+passosHora <- passosHora %>%
+  clean_names()
+sonoDia <- sonoDia %>%
+  clean_names()
+
+```
+#### 3.2.5 - Consistencia das colunas data e hora
+Agora que verificamos os nomes as colunas, vamos nos concentrar na limpeza do formato data-hora para os Dataframes daily_activity e daily_sleep. A partir das colunas referentes aos dados w hora foram criadas duas colunas noemadas data e hora.
+
+
+```{r inclusao dos dias da semana}
+dias_formatado <- as.Date(atvDia$ActivityDate, format = '%m/%d/%Y')
+
+activity_days <- atvDia %>% 
+  mutate(week_days = weekdays(dias_formatado))
+```
+
+#### 4 - Anãlise
+##### 4.1 - Resumo estatistico
+```{r}
+atvDia %>%
+  select (TotalSteps,
+          VeryActiveDistance,
+          FairlyActiveMinutes,
+          LightlyActiveMinutes,
+          SedentaryMinutes,
+          Calories) %>%
+ summary()
+ 
+caloriashora %>%
+   select(Calories) %>%
+  summary()
+ 
+intensidadehora %>%
+  select(TotalIntensity) %>%
+summary()
+
+passosHora %>%
+  select(StepTotal) %>%
+summary()
+
+sonoDia %>%
+  select(TotalMinutesAsleep,
+         TotalTimeInBed) %>%
+summary()
+
+
+```
+Alguams descobertertas de acordo com o modelo estatistico
+
+* Media de passos por dia 7638, numero maximo de massos 36019 e em menos de 75% dao menos de 10727 passos
+* Média de tempo em alta atividade 22 minutos e tempo em modo sedentário é de 990 minutos
+* Média de calorias gastas 2304
+* Total de tempo em minutos em estado de sono 419 minutos e tempo na cama 458,6 minutos
+
+##### Unindo tabelas
+
+Depois de verificar as tabelas, precisamos unir os datasets atvDia e sonoDia e retornar os dados em commun entre as duas tabelas.
+
+```{r Unindo duas tabelas}
+diario_atividade_sono <- merge(atvDia, sonoDia, by=c("Id","data"))
+
+View(diario_atividade_sono)
+```
+
+#### Média de tempo em cada nivel de atividade (% / dia)
+
+#### Gráficos
+```{r}
+atvDia_media <- atvDia %>%
+  summarise(mean(VeryActiveMinutes), mean(FairlyActiveMinutes), 
+            mean(LightlyActiveMinutes), mean(SedentaryMinutes))
+
+# calculo de %
+atvDia_mediaPorcent <- prop.table(atvDia_media)*100
+
+atvPorcent <- data.frame(
+  legenda=c("Muito ativo", "Razoavelmente ativo", "Levemente ativo", "Sedentário"),
+  valores=c(atvDia_mediaPorcent$`mean(VeryActiveMinutes)`,atvDia_mediaPorcent$`mean(FairlyActiveMinutes)`,
+  atvDia_mediaPorcent$`mean(LightlyActiveMinutes)`,atvDia_mediaPorcent$`mean(SedentaryMinutes)`))
+
+#plotagem
+plot_ly(atvPorcent, labels = ~legenda, values = ~valores, type = 'pie',textposition = 'outside',textinfo = 'label+percent') %>%
+  layout(title = 'Porcentagem da Média de tempo de cada nivel de atividade',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+```
+
+Conforme o grafico acima verificamos que mais de 80 % dos usuarios ficam em estado de sedentarismo e a media dis demais niveis correspondem a 20%.
+
+**Recomendação**: O aplicativo pode mostrar a divisão do tempo consumido em cada atividade no dia anterior , dessa forma o usuaro pode constatar o tempo que ele fica sedentario e planejar melhor o nivel de atividade do dia.
+
+#### Relação entre total de passos dados e o gasto calorico
+
+```{r}
+ggplot(data= atvDia, mapping = aes(x=Calories, y=TotalSteps)) +
+  geom_point()+ geom_smooth() +
+  labs(title= "Total de passos / Gasto Calorico", x= "Gasto Calorico", y="Número de passos")
+```
+Neste grafico acima podemos constatar que quanto maior o numero de passos dados, maior é o gasto calorico, ou seja, são duas variaveis que estão ligadas entre si.
+
+#### Variação da média da calorias gastas de acordo com o horario
+
+```{r}
+caloriashora$ActivityHour=as.POSIXct(caloriashora$ActivityHour, format="%m/%d/%Y %I:%M:%S %p", tz=Sys.timezone())
+caloriashora$data <- format(caloriashora$ActivityHour, format = "%d/%m/%Y")
+caloriashora$hora <- format(caloriashora$ActivityHour, format = "%H:%M:%S")
+
+caloriasHora_media <- caloriashora %>% 
+  group_by(hora) %>% 
+  summarise(calorias_media = mean(Calories))
+
+#plotagem
+ggplot(data=caloriasHora_media, aes(x=hora, y=calorias_media)) +
+  geom_histogram(stat = "identity", fill= 'darkblue') +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title="Variação da Média de Calorias Gastas de acordo com o Horário", x="Horário", y="Média de calorias gastas")
+
+```
+
+Com o grafico acima vimos que o periodo do dia que há maior gasto de calorias é as 12:00 e entre as 17:00 e 18:00
+**Recomensação** Nesses horarios o aplicativo pode enviar mensagens de motivação ou lembretes para que o usuario possa fazer atividades fisicas
+
+
+```{r}
+activity_days %>%
+  group_by(activity_days$week_days) %>%
+  ggplot( data = activity_days, mapping = aes( x = week_days, y = TotalSteps, color = week_days) ) +
+  geom_point()+
+  labs(
+  title = "Numero total de passos em cada dia",
+  caption = "FitBit Fitness Tracker Data",
+  x = "Week Days",
+  y = "Total de passos",
+  color = "Week Days"
+  )
+
+```
+
+Neste Grafico podemos ver que os dias mais movimentados são os dias de sábado.
+
+
+#### Relação entre tempo dormindo e tempo em cada nivel de atividade
+```{r}
+# Verificando valores maximo e minimo para limites do grafico 
+summary(diario_atividade_sono)
+
+# grafico 
+ggplot(data = diario_atividade_sono) +  
+  geom_point(aes(x=TotalMinutesAsleep, y=VeryActiveMinutes), color="blue") +
+  geom_smooth(aes(x=TotalMinutesAsleep, y = VeryActiveMinutes), color="black", se=FALSE) +
+  
+  geom_point(aes(x= TotalMinutesAsleep, y= FairlyActiveMinutes), color="green") +
+  geom_smooth(aes(x=TotalMinutesAsleep, y=FairlyActiveMinutes), color="black", se=FALSE) +
+  
+  geom_point(aes(x=TotalMinutesAsleep, y=LightlyActiveMinutes), color="yellow") + 
+  geom_smooth(aes(x=TotalMinutesAsleep, y=LightlyActiveMinutes), color="black", se=FALSE) +
+  
+  geom_point(aes(x=TotalMinutesAsleep, y=SedentaryMinutes), color="red") + 
+  geom_smooth(aes(x=TotalMinutesAsleep, y=SedentaryMinutes), color="black", se=FALSE) +
+  
+  scale_x_continuous(limits = c(0,900))+
+  scale_y_continuous(limits = c(0,1300))+
+  
+  annotate("text", x=760, y=65, label="Muito e Razoavelmente ativo", color="black", size=3)+
+  annotate("text", x=805, y=210, label="Levemente ativo", color="black", size=3)+
+  annotate("text", x=760, y=650, label="Sedentário", color="black", size=3)+
+  
+  labs(title="Relação entre Tempo Dormindo e Tempo em cada Nível de Atividade", x="Tempo dormindo (min)", y="Tempo de atividade (min)")
+                
+              
+              
+  
+  
+```
+
+Apartir doo grafico acima, podemos indentificar que existe uma relação negativa entre o tempo de sono e o tempo de atividade sedentária.
+**Recomendação**: Se os usuários do aplicativo Bellabeat queiserem melhorar o sono, o aplicativo pode recomendar a redução do tempo em estado sedentário.
+
+
+### Ação
+
+#### Recomendações para equipe de Marketing
+
+* O aplictivo da Bellabeat pode apresentar estudos que indicam os valores recomentadados para uma vida saudável, como o número de passos totais por dia, maximo de tempo em atividade sedentaria, tempo minimo de sono, entre outros.
+
+* A Bellabeat pode oferecer um sistema de recompensa de acordo com as metas diarias estabelecidas. Essas metas podem ser estabelecidas de acordo com cada perfil de atividade de cada usuario.
+
+* A Bellabeat pode realizar parcerias com outras empresas que também investem em uma vida saudável, Afim de proporcionar um ambiente unico e um ecossistema imtegrado.
+
+* Os produtos Leaf e Time podem emitir alertas após um grande periodo de sedentarismo, alem de poder avisar a hora do sono e obter metricas de qualidade do sono. Evitando assim a permanencia prolongada na cama.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
